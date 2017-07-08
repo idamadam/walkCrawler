@@ -19,6 +19,13 @@ class WalkSpider(scrapy.Spider):
 		def extract_with_css(query):
 			return response.css(query).extract_first().strip()
 
+		def is_walk_return(query):
+			returnVar = response.css(query).extract_first()
+			if returnVar != None:
+				return 'y'
+			else:
+				return 'n'
+		
 		yield {
 			'name': extract_with_css('div.intro h2::text'),
 			'url': response.url,
@@ -26,9 +33,9 @@ class WalkSpider(scrapy.Spider):
 			'location': extract_with_css('div.intro a::text'),
 			'distanceNumber': extract_with_css('.stat .value::text'),
 			'distanceUnit': extract_with_css('.stat .value + span::text'),
-			'isReturn': extract_with_css('.stat .value + span + span::text'),
+			'isReturn': is_walk_return('.stat .value + span + span::text'),
 			'duration': response.css('.stat .value::text')[1].extract(),
-			'durationUnit': response.css('.stat .value + span::text')[1].extract(),
+			#'durationUnit': response.css('.stat .value + span::text')[1].extract(),
 			'difficulty': extract_with_css('.stat div::text'),
 			'features': response.css('.tagViewer .tagViewLabel::text').extract(),
 			'description': extract_with_css('.midBar p::text'),
