@@ -26,16 +26,26 @@ class WalkSpider(scrapy.Spider):
 			else:
 				return 'n'
 		
+		def duration_in_min(number, unit):
+			durationTime = response.css(number)[1].extract()
+			durationUnit = response.css(unit)[1].extract()
+			
+			if durationUnit == 'days':
+				return durationTime*24*60
+			elif durationUnit == 'hours':
+				return durationTime*60
+			elif durationUnit == 'mins':
+				return durationTime
+			else:
+				return durationTime
+
 		yield {
 			'name': extract_with_css('div.intro h2::text'),
 			'url': response.url,
 			'state': response.url.split('/')[3],
 			'location': extract_with_css('div.intro a::text'),
-			'distanceNumber': extract_with_css('.stat .value::text'),
-			'distanceUnit': extract_with_css('.stat .value + span::text'),
-			'isReturn': is_walk_return('.stat .value + span + span::text'),
-			'duration': response.css('.stat .value::text')[1].extract(),
-			#'durationUnit': response.css('.stat .value + span::text')[1].extract(),
+			'distance': response.xpath('//div[@class="homeLists"]/div/div[@class="stat"][2]/span/text()').extract(),
+			'duration': response.xpath('//div[@class="homeLists"]/div/div[@class="stat"][3]/span/text()').extract(),
 			'difficulty': extract_with_css('.stat div::text'),
 			'features': response.css('.tagViewer .tagViewLabel::text').extract(),
 			'description': extract_with_css('.midBar p::text'),
