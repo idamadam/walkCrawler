@@ -56,9 +56,9 @@ class WalkSpider(scrapy.Spider):
 				string = 'null'
 			
 			if string == var:
-				return 'true'
+				return json.dumps(True)
 			else:
-				return 'false'
+				return json.dumps(False)
 
 		def duration_in_min():
 			data = extract_stat_with_xpath(3)
