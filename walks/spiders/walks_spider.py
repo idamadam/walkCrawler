@@ -24,8 +24,8 @@ class WalkSpider(scrapy.Spider):
 			selector = '//div[@class="homeLists"]/div/div[@class="stat"][%s]/span/text()' % arrayIndex
 			return response.xpath(selector).extract()
 
-		def distance_in_meters(arrayIndex):
-			data = extract_stat_with_xpath(arrayIndex)
+		def distance_in_meters():
+			data = extract_stat_with_xpath(2)
 			
 			try:
 				number = float(data[0])
@@ -48,8 +48,8 @@ class WalkSpider(scrapy.Spider):
 				return distanceString
 				
 
-		def duration_in_min(arrayIndex):
-			data = extract_stat_with_xpath(arrayIndex)
+		def duration_in_min():
+			data = extract_stat_with_xpath(3)
 			
 			try:
 				time =  float(data[0])
@@ -75,8 +75,8 @@ class WalkSpider(scrapy.Spider):
 			'url': response.url,
 			'state': response.url.split('/')[3],
 			'location': extract_with_css('div.intro a::text'),
-			'distance': distance_in_meters(2),
-			'duration': duration_in_min(3),
+			'distance': distance_in_meters(),
+			'duration': duration_in_min(),
 			'difficulty': extract_with_css('.stat div::text'),
 			'features': response.css('.tagViewer .tagViewLabel::text').extract(),
 			'description': extract_with_css('.midBar p::text'),
