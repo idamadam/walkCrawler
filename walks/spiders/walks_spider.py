@@ -56,9 +56,9 @@ class WalkSpider(scrapy.Spider):
 				string = 'null'
 			
 			if string == var:
-				return 'y'
+				return 'true'
 			else:
-				return 'n'
+				return 'false'
 
 		def duration_in_min():
 			data = extract_stat_with_xpath(3)
