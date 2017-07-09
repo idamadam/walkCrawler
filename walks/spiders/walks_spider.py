@@ -12,8 +12,8 @@ class WalkSpider(scrapy.Spider):
 			yield response.follow(href, self.parse_walk)
 
 		# Follow link to next page
-		# for href in response.css('.pagination .next  a::attr(href)'):
-		# yield response.follow(href, self.parse)
+		for href in response.css('.pagination .next  a::attr(href)'):
+			yield response.follow(href, self.parse)
 
 	def parse_walk(self, response):
 			
