@@ -46,7 +46,19 @@ class WalkSpider(scrapy.Spider):
 			else:
 				distanceString = ''.join(str(e) for e in [number, unit])
 				return distanceString
-				
+
+		def arrayToBoolean(var):
+			data = extract_stat_with_xpath(2)
+			
+			try:
+				string = data[2]
+			except IndexError:
+				string = 'null'
+			
+			if string == var:
+				return 'y'
+			else:
+				return 'n'
 
 		def duration_in_min():
 			data = extract_stat_with_xpath(3)
@@ -77,6 +89,8 @@ class WalkSpider(scrapy.Spider):
 			'location': extract_with_css('div.intro a::text'),
 			'distance': distance_in_meters(),
 			'duration': duration_in_min(),
+			'isReturn': arrayToBoolean('return'),
+			'isOneWay': arrayToBoolean('one-way'),
 			'difficulty': extract_with_css('.stat div::text'),
 			'features': response.css('.tagViewer .tagViewLabel::text').extract(),
 			'description': extract_with_css('.midBar p::text'),
